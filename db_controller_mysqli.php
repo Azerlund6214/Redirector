@@ -27,7 +27,7 @@
          * @param string $host
          * @param string $user
          * @param string $pass
-         * @return bool либо exit()
+         * @return bool - true либо exit()
          */
         public function Connect( $host , $user , $pass  )
 		{
@@ -70,6 +70,7 @@
 
         /**
          * Вывести последнюю ошибку mysqli
+         * TODO: Добавить возможность возвращения bool, без Echo.
          */
 		public function Get_error( )
 		{
@@ -83,6 +84,7 @@
         /**
          * Выполнить запрос БЕЗ возвращаемого результата
          * @param $sql
+         * TODO: Добавить реакцию на ошибку в запросе(неудачный запрос при кривом sql)
          */
 		public function Exec( $sql )
 		{
@@ -95,13 +97,16 @@
          * @param string $sql
          * @param string $fetch_type = all / assoc
          * @return mixed
+         * TODO: Добавить другие виды фетчей
+         * TODO: Добавить реакцию на ошибку в запросе(неудачный запрос при кривом sql)
          */
 		public function Query( $sql , $fetch_type = "all" )
 		{
 			
 			$result = $this->db -> query( $sql );
-			//printf("Select вернул ". $result->num_rows ." строк.");
-			
+			#print_r("Select вернул ". $result->num_rows ." строк.");
+
+            # В этом месте будет отлов ошибки запроса
 			
 			switch( $fetch_type )
 			{
@@ -117,23 +122,22 @@
 
         /**
          * Выбрать рабочую БД
-         * @param $target_db
+         * @param string $target_db
          */
 		public function Select_db( $target_db )
 		{
 			$this->db -> query("USE $target_db");
 		}
 		
-		
-		# Проверка работоспособности.
+
+        /**
+         * Проверка работоспособности соединения с СУБД
+         * Выведет версию СУБД и выйдет.
+         */
 		function test_conn()
 		{
-
 			echo $this->Query('SELECT VERSION()')[0][0];
-				
-			
 			exit;
-		
 		}
 		
 		
