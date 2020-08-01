@@ -22,12 +22,15 @@
     $DBC -> Select_db( $db_name );
     $DBC -> Get_error();
 
+
+
+
     echo "<pre>" , print_r( $DBC -> test_conn() ) , "</pre>"; exit("12134");
 
 
 
 
-    
+
 
 
 

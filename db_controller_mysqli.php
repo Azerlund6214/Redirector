@@ -21,8 +21,15 @@
 
 		
 		
-		# Создание подключения
-		public function Connect( $host , $user , $pass  )
+
+        /**
+         * Подключиться к серверу СУБД
+         * @param string $host
+         * @param string $user
+         * @param string $pass
+         * @return bool либо exit()
+         */
+        public function Connect( $host , $user , $pass  )
 		{
 			
 			// MySQLi, процедурная часть
@@ -51,13 +58,19 @@
 		}
 
 
-		// не тестил
+        /**
+         * Отключиться от сервера СУБД
+         */
 		public function Disconnect( )
 		{
 			$this->db->close();
 		}
 		
-		# Вывести последнюю ошибку mysqli
+
+
+        /**
+         * Вывести последнюю ошибку mysqli
+         */
 		public function Get_error( )
 		{
 			if ( $this->db->errno != 0 )
@@ -67,14 +80,22 @@
 		}
 		
 		
-		// Не предполагает выачу результатов
+        /**
+         * Выполнить запрос БЕЗ возвращаемого результата
+         * @param $sql
+         */
 		public function Exec( $sql )
 		{
 			$this->db -> query( $sql );
 		
 		}
-		
-		
+
+        /**
+         * Выполнить запрос и вернуть результат
+         * @param string $sql
+         * @param string $fetch_type = all / assoc
+         * @return mixed
+         */
 		public function Query( $sql , $fetch_type = "all" )
 		{
 			
@@ -84,25 +105,20 @@
 			
 			switch( $fetch_type )
 			{
-				case "all":   $fetched = $result -> fetch_all();  break;
-				case "assoc": $fetched = $result -> fetch_assoc(); break;
+				case "all":    return $result -> fetch_all();  break;
+				case "assoc": return  $result -> fetch_assoc(); break;
 				
 				default: exit("Невалидный fetch_type");
 			}
-			
-			
-			/* удаление выборки */
-			$result->free();
-			
-			
-			return $fetched;
+
+
 		}
-		
-		
-		
-		
-		
-		// робит
+
+
+        /**
+         * Выбрать рабочую БД
+         * @param $target_db
+         */
 		public function Select_db( $target_db )
 		{
 			$this->db -> query("USE $target_db");
