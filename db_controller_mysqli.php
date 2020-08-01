@@ -155,26 +155,26 @@
 			
 			
 			
-// MySQLi, ООП
-if ($result = $mysqli->query($query))
-{
-   while ($user = $result->fetch_object('User'))
-   {
-      echo $user->info()."\n";
-   }
-}
-			
-			
-			
-			
-// MySQLi, "ручная" зачистка параметра
-$username = mysqli_real_escape_string($_GET['username']);
-$mysqli->query("SELECT * FROM users WHERE username = '$username'");
+            // MySQLi, ООП
+            if ($result = $mysqli->query($query))
+            {
+               while ($user = $result->fetch_object('User'))
+               {
+                  echo $user->info()."\n";
+               }
+            }
 
-// mysqli, подготовленные выражения
-$query = $mysqli->prepare('SELECT * FROM users WHERE username = ?');
-$query->bind_param('s', $_GET['username']);
-$query->execute();
+
+
+
+            // MySQLi, "ручная" зачистка параметра
+            $username = mysqli_real_escape_string($_GET['username']);
+            $mysqli->query("SELECT * FROM users WHERE username = '$username'");
+
+            // mysqli, подготовленные выражения
+            $query = $mysqli->prepare('SELECT * FROM users WHERE username = ?');
+            $query->bind_param('s', $_GET['username']);
+            $query->execute();
 
 		*/
 		

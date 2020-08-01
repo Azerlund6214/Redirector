@@ -3,7 +3,7 @@
 	//ob_implicit_flush(); ### Отключаем SAPI-буфер
 	//ob_end_flush();
 	
-	$debug_mode = true; // Не будет реального перехода
+
 
     $db_host = '127.0.0.1';
     $db_user = 'root';
@@ -13,6 +13,7 @@
 
 	
     require_once( "db_controller_mysqli.php" );
+    require_once( "SF_CLASS.php" );
     require_once( "Redirector_class.php" );
 
 
@@ -20,17 +21,14 @@
     $DBC = new DB_Controller();
     $DBC -> Connect( $db_host, $db_user , $db_pass );
     $DBC -> Select_db( $db_name );
-    $DBC -> Get_error();
+    //$DBC -> Get_error();
+
+    //echo "<pre>" , print_r( $DBC -> test_conn() ) , "</pre>"; exit("12134");
 
 
 
 
-    echo "<pre>" , print_r( $DBC -> test_conn() ) , "</pre>"; exit("12134");
-
-
-
-
-
+    $R = new Redirector( $DBC );
 
 
 
@@ -40,11 +38,18 @@
 
 
 
-	$curr_file_url = $_SERVER['PHP_SELF'];
-	$curr_file_url_echoget = $_SERVER['PHP_SELF']."?echoget";
+    if ( $_SERVER['REQUEST_URI'] === "/" )
+        header("Location: ". SF::Get_This_Server_Domain()."/empty_uri"  );
 
 
-    exit("123");
+
+    $R -> Resolve_URI_Request( $_SERVER['REQUEST_URI'] );
+
+
+
+
+
+    exit("<hr>exit");
 
 
 
