@@ -4,6 +4,7 @@
 	//ob_end_flush();
 	
     //TODO: Написать обработку ? в uri
+    // В логи пишутся только успешные переходы
 
     $db_host = '127.0.0.1';
     $db_user = 'root';
@@ -14,7 +15,6 @@
 	
     require_once( "db_controller_mysqli.php" );
     require_once( "SF_CLASS.php" );
-    require_once( "Redirector_class.php" );
 
 
 
@@ -28,22 +28,32 @@
 
 
 
-    $R = new Redirector( $DBC );
+
+    $request_uri = $_SERVER['REQUEST_URI'];
+
+
+    if ( $request_uri === "/" )
+        header("Location: ".SF::Get_This_Server_Domain()."/empty_uri" );
+
+
+
+    $sql = "SELECT * FROM directions WHERE uri='$request_uri'";
+    $result = $DBC -> Query($sql , "assoc");
+
+
+    if ( count( $result) === 0 )
+        header("Location: ".SF::Get_This_Server_Domain()."/uri_not_found" );
+
+
+    SF::PRINTER($result);
+
+    //usleep();
 
 
 
 
 
 
-
-
-
-    if ( $_SERVER['REQUEST_URI'] === "/" )
-        header("Location: ". SF::Get_This_Server_Domain()."/empty_uri"  );
-
-
-
-    $R -> Resolve_URI_Request( $_SERVER['REQUEST_URI'] );
 
 
 
