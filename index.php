@@ -3,7 +3,7 @@
 	//ob_implicit_flush(); ### Отключаем SAPI-буфер
 	//ob_end_flush();
 	
-
+    //TODO: Написать обработку ? в uri
 
     $db_host = '127.0.0.1';
     $db_user = 'root';
