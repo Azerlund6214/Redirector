@@ -1,12 +1,11 @@
 <?php
 	
     //TODO: Написать обработку ? в uri
-    // В логи пишутся только успешные переходы
-    // Можно добавить статус ссылки - активная и выключенная (дописать "where status=active" в sql)
+    //      Можно добавить статус ссылки - активная и выключенная (дописать "where status=active" в sql)
 
 
-    #$debug_mode = true; // Выводить все переменные и не делать реальный редирект в конце
-    $debug_mode = false;
+    $debug_mode = true; // Выводить все переменные и не делать реальный редирект в конце
+    #$debug_mode = false;
 
     $logging_active = true; # Писать ли логи в бд
 
@@ -30,17 +29,23 @@
     #####
 
     $request_uri = $_SERVER['REQUEST_URI'];
+    #TODO: Тут огромная дыра в безопасности - проверять на SQL-injection
 
-    if ( $request_uri === "/" )
-        header("Location: ".SF::Get_This_Server_Domain()."/empty_uri" );
-
+    if ( $request_uri === "/" || $request_uri === "" )
+    {
+        header("Location: " . SF::Get_This_Server_Domain() . "/empty_uri");
+        exit();
+    }
     #####
 
     $sql = "SELECT * FROM directions WHERE uri='$request_uri'";
     $result = $DBC -> Query($sql , "assoc");
 
-    if ( count( $result) === 0 )
-        header("Location: ".SF::Get_This_Server_Domain()."/uri_not_found" );
+    if ( ! $result )
+    {
+        header("Location: " . SF::Get_This_Server_Domain() . "/uri_not_found");
+        exit();
+    }
 
     if( $debug_mode ) SF::PRINTER($result);
     /*  [uri] => /uri_not_found
@@ -73,7 +78,7 @@
 
 
     header("Location: ".$result['destination'] );
-
+    exit();
 
 	
 ?>

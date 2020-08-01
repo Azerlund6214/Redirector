@@ -98,7 +98,7 @@ class SF {
 				
 			case "VARS":
 				echo "<hr>Все ПОЛЯ класса:"; 
-				print_r( @get_object_vars( $this ) );
+				print_r( @get_object_vars( $target ) );
 				break;
 				
 			default:
